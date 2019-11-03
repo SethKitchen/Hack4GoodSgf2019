@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:PortalToWork.CustomControls;assembly=PortalToWork"
+             xmlns:enums="clr-namespace:PortalToWork.Models; assembly=PortalToWork"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             mc:Ignorable="d"
+             x:Class="PortalToWork.Views.LocationInfoPage"
+             Title="{Binding Title}"
+             x:Name="LocationInfoPageRoot">
+
+   <!-- <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
+    </ContentPage.ToolbarItems> -->
+    <ScrollView>
+        <StackLayout>
+           <ActivityIndicator
+                           IsVisible="{Binding IsDataBusy}"
+                           IsRunning="{Binding IsDataBusy}"
+                           Color="#2698fb" />
+            <StackLayout x:Name="SetLocation" BackgroundColor="#f1f9ff">
+                <Label HorizontalOptions="CenterAndExpand" FontAttributes="Bold" FontSize="Medium" TextColor="#2698fb" Margin="0,20,0,0">SET LOCATION FOR JOB SEARCH</Label>
+                <Button Margin="10,20" BorderRadius="20" Text="USE MY CURRENT LOCATION" Clicked="UseCurrentButton_Clicked" TextColor="White" BackgroundColor="#2698fb"></Button>
+                <StackLayout Orientation="Horizontal">
+                    <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+                        <BoxView  HeightRequest="1" Color="#2698fb"></BoxView>
+                    </StackLayout>
+                    <Label TextColor="#2698fb" Margin="20,0">OR</Label>
+                    <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+                        <BoxView  HeightRequest="1" Color="#2698fb"></BoxView>
+                    </StackLayout>
+                </StackLayout>
+
+                <Label TextColor="#2698fb" Margin="10,5,0,0">Street Address</Label>
+                <local:NoUnderlineEntry x:Name="streetAddressLineOneEntry" TextColor="#2698fb" Margin="10,0" HorizontalOptions="FillAndExpand" HeightRequest="40" BackgroundColor="White"></local:NoUnderlineEntry>
+
+                <Label TextColor="#2698fb" Margin="10,5,0,0">Line 2</Label>
+                <local:NoUnderlineEntry x:Name="streetAddressLineTwoEntry" TextColor="#2698fb" Margin="10,0" HorizontalOptions="FillAndExpand" HeightRequest="40" BackgroundColor="White"></local:NoUnderlineEntry>
+
+                <Label TextColor="#2698fb" Margin="10,5,0,0">City</Label>
+                <local:NoUnderlineEntry x:Name="cityEntry" Margin="10,0" TextColor="#2698fb" HorizontalOptions="FillAndExpand" HeightRequest="40" BackgroundColor="White"></local:NoUnderlineEntry>
+
+                <Label TextColor="#2698fb" Margin="10,5,0,0">State</Label>
+                <local:EnumBindablePicker x:Name="statePicker" Margin="10,0" TextColor="#2698fb" x:TypeArguments="enums:States" SelectedItem="{Binding SelectedEnum}" HorizontalOptions="FillAndExpand" HeightRequest="40" BackgroundColor="White"></local:EnumBindablePicker>
+
+                <Label TextColor="#2698fb" Margin="10,5,0,0">Postal Code</Label>
+                <local:NoUnderlineEntry x:Name="postalCodeEntry" Margin="10,0" TextColor="#2698fb" HorizontalOptions="FillAndExpand" HeightRequest="40" BackgroundColor="White"></local:NoUnderlineEntry>
+
+                <Button Margin="10,20" BorderRadius="20" Text="USE THIS ADDRESS" Clicked="UseThisAddressButton_Clicked" TextColor="White" BackgroundColor="#2698fb"></Button>
+            </StackLayout>
+            <StackLayout x:Name="JobsNearMe" IsVisible="False" Margin="10">
+                <StackLayout HeightRequest="60">
+                    <RelativeLayout HorizontalOptions="FillAndExpand">
+                        <StackLayout>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                            </StackLayout.GestureRecognizers>
+                            <ffimageloadingsvg:SvgCachedImage WidthRequest="35" HeightRequest="35"  Source="backArrow.svg">
+                                <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                    <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                </ffimageloadingsvg:SvgCachedImage.Transformations>
+                            </ffimageloadingsvg:SvgCachedImage>
+                        </StackLayout>
+                        <Label RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent,  Property=Width, Factor=0.27}" Text="JOBS NEAR ME" FontSize="Large" TextColor="#2698fb" />
+                    </RelativeLayout>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Button BorderRadius="20" Text="LOAD MORE JOBS" HorizontalOptions="FillAndExpand" Clicked="LoadMore_Clicked" TextColor="White" BackgroundColor="#2698fb"></Button>
+                    <StackLayout HorizontalOptions="End">
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="WrenchTapGestureRecognizer_Tapped" />
+                        </StackLayout.GestureRecognizers>
+                        <ffimageloadingsvg:SvgCachedImage WidthRequest="25" HeightRequest="25" Source="wrench.svg" Margin="10">
+                            <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                            </ffimageloadingsvg:SvgCachedImage.Transformations>
+                        </ffimageloadingsvg:SvgCachedImage>
+                    </StackLayout>
+                </StackLayout>
+                <ListView x:Name="JobsListView"
+                ItemsSource="{Binding Jobs}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                RefreshCommand="{Binding LoadJobsCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnJobSelected">
+                    <d:ListView.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Patient Transporter</x:String>
+                            <x:String>Delivery Driver/Warehouse</x:String>
+                            <x:String>Answering Service</x:String>
+                            <x:String>Arborist</x:String>
+                            <x:String>Vacuum Truck Service</x:String>
+                        </x:Array>
+                    </d:ListView.ItemsSource>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" Margin="0,10" Padding="10" BackgroundColor="#f1f9ff">
+                                    <StackLayout WidthRequest="50" HeightRequest="50">
+                                        <RelativeLayout>
+                                            <ffimageloadingsvg:SvgCachedImage WidthRequest="35" HeightRequest="35" Source="circle.svg">
+                                                <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                                    <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                                </ffimageloadingsvg:SvgCachedImage.Transformations>
+                                            </ffimageloadingsvg:SvgCachedImage>
+                                            <Label TextColor="White" d:Text="1" Margin="13,8,0,0" Text="{Binding Index}" />
+                                        </RelativeLayout>
+                                    </StackLayout>
+                                    <StackLayout>
+                                        <Label Text="{Binding JobTitle}" TextColor="#2698fb"
+                                d:Text="{Binding .}"
+                                LineBreakMode="NoWrap"
+                                FontSize="Micro"
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                 />
+                                        <Label Text="{Binding EmployerName}" TextColor="#2698fb"
+                                d:Text="Item description"
+                                LineBreakMode="NoWrap"
+                                FontSize="Micro"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                 />
+                                        <Label Text="Travel Time (min)" TextColor="#2698fb"
+                                d:Text="Item description"
+                                LineBreakMode="NoWrap"
+                                FontSize="Micro"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                 />
+                                    </StackLayout>
+                                    <StackLayout HorizontalOptions="EndAndExpand" IsVisible="{Binding WalkSwitchOn}">
+                                        <ffimageloadingsvg:SvgCachedImage WidthRequest="25" HeightRequest="25" Source="walk.svg">
+                                            <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                                <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                            </ffimageloadingsvg:SvgCachedImage.Transformations>
+                                        </ffimageloadingsvg:SvgCachedImage>
+                                        <Label d:Text="25 min" FontSize="Small" Text="{Binding WalkTime}" TextColor="#2698fb" />
+                                    </StackLayout>
+                                    <StackLayout HorizontalOptions="EndAndExpand" IsVisible="{Binding BikeSwitchOn}">
+                                        <ffimageloadingsvg:SvgCachedImage WidthRequest="25" HeightRequest="25" Source="bike.svg">
+                                            <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                                <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                            </ffimageloadingsvg:SvgCachedImage.Transformations>
+                                        </ffimageloadingsvg:SvgCachedImage>
+                                        <Label d:Text="20 min" FontSize="Small" Text="{Binding BikeTime}" TextColor="#2698fb" />
+                                    </StackLayout>
+                                    <StackLayout HorizontalOptions="EndAndExpand" IsVisible="{Binding DriveSwitchOn}">
+                                        <ffimageloadingsvg:SvgCachedImage WidthRequest="25" HeightRequest="25" Source="car.svg">
+                                            <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                                <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                            </ffimageloadingsvg:SvgCachedImage.Transformations>
+                                        </ffimageloadingsvg:SvgCachedImage>
+                                        <Label d:Text="20 min" FontSize="Small" Text="{Binding DriveTime}" TextColor="#2698fb" />
+                                    </StackLayout>
+                                    <StackLayout HorizontalOptions="EndAndExpand" IsVisible="{Binding BusSwitchOn}">
+                                        <ffimageloadingsvg:SvgCachedImage WidthRequest="25" HeightRequest="25" Source="bus.svg">
+                                            <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                                <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                            </ffimageloadingsvg:SvgCachedImage.Transformations>
+                                        </ffimageloadingsvg:SvgCachedImage>
+                                        <Label d:Text="25 min" FontSize="Small" Text="{Binding BusTime}" TextColor="#2698fb" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            <StackLayout x:Name="JobSearchSettings" IsVisible="False" Margin="10">
+                <StackLayout HeightRequest="60">
+                    <RelativeLayout HorizontalOptions="FillAndExpand">
+                        <StackLayout>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                            </StackLayout.GestureRecognizers>
+                            <ffimageloadingsvg:SvgCachedImage WidthRequest="35" HeightRequest="35"  Source="backArrow.svg">
+                                <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                    <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                </ffimageloadingsvg:SvgCachedImage.Transformations>
+                            </ffimageloadingsvg:SvgCachedImage>
+                        </StackLayout>
+                        <Label RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent,  Property=Width, Factor=0.15}" Text="JOB SEARCH SETTINGS" FontSize="Large" TextColor="#2698fb" />
+                    </RelativeLayout>
+                </StackLayout>
+                <StackLayout BackgroundColor="#f1f9ff">
+                    <Label Margin="10,0,0,0" FontAttributes="Bold" TextColor="#2698fb" Text="POSITION" />
+                    <StackLayout BackgroundColor="White">
+                        <StackLayout Orientation="Horizontal">
+                            <Label TextColor="#2698fb" HorizontalOptions="FillAndExpand" Text="Education Level" />
+                            <local:EnumBindablePicker x:Name="educationPicker" Margin="10,0" TextColor="#2698fb" x:TypeArguments="enums:Educations" SelectedIndex="0" SelectedIndexChanged="EducationPicker_SelectedIndexChanged" HorizontalOptions="FillAndExpand" HeightRequest="40" BackgroundColor="White"></local:EnumBindablePicker>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Job Type" TextColor="#2698fb" HorizontalOptions="FillAndExpand"/>
+                            <local:EnumBindablePicker x:Name="typePicker" Margin="10,0" TextColor="#2698fb" x:TypeArguments="enums:JobTypes" SelectedIndex="0" SelectedIndexChanged="EducationPicker_SelectedIndexChanged" HorizontalOptions="FillAndExpand" HeightRequest="40" BackgroundColor="White"></local:EnumBindablePicker>
+                        </StackLayout>
+                    </StackLayout>
+                    <Label Margin="10,0,0,0" FontAttributes="Bold" TextColor="#2698fb" Text="TRAVEL" />
+                    <StackLayout BackgroundColor="White">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Maximum Travel Time" TextColor="#2698fb" HorizontalOptions="FillAndExpand"/>
+                            <local:EnumBindablePicker x:Name="travelTimePicker" Margin="10,0" TextColor="#2698fb" x:TypeArguments="enums:TravelTimes" SelectedIndex="0" SelectedIndexChanged="EducationPicker_SelectedIndexChanged" HorizontalOptions="FillAndExpand" HeightRequest="40" BackgroundColor="White"></local:EnumBindablePicker>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Show Walking Distance" TextColor="#2698fb" HorizontalOptions="FillAndExpand"/>
+                            <ffimageloadingsvg:SvgCachedImage WidthRequest="35" HeightRequest="35"  Source="walk.svg">
+                                <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                    <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                </ffimageloadingsvg:SvgCachedImage.Transformations>
+                            </ffimageloadingsvg:SvgCachedImage>
+                            <Switch x:Name="walkSwitch" BackgroundColor="#2698fb" IsToggled="true" Toggled="WalkSwitch_Toggled" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Show Biking Distance" TextColor="#2698fb" HorizontalOptions="FillAndExpand"/>
+                            <ffimageloadingsvg:SvgCachedImage WidthRequest="35" HeightRequest="35"  Source="bike.svg">
+                                <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                    <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                </ffimageloadingsvg:SvgCachedImage.Transformations>
+                            </ffimageloadingsvg:SvgCachedImage>
+                            <Switch x:Name="bikeSwitch" BackgroundColor="#2698fb" IsToggled="true" Toggled="WalkSwitch_Toggled"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Show Busing Distance" TextColor="#2698fb" HorizontalOptions="FillAndExpand"/>
+                            <ffimageloadingsvg:SvgCachedImage WidthRequest="35" HeightRequest="35"  Source="bus.svg">
+                                <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                    <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                </ffimageloadingsvg:SvgCachedImage.Transformations>
+                            </ffimageloadingsvg:SvgCachedImage>
+                            <Switch x:Name="busSwitch" BackgroundColor="#2698fb" IsToggled="true" Toggled="WalkSwitch_Toggled"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Show Driving Distance" TextColor="#2698fb" HorizontalOptions="FillAndExpand"/>
+                            <ffimageloadingsvg:SvgCachedImage WidthRequest="35" HeightRequest="35"  Source="car.svg">
+                                <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                    <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                </ffimageloadingsvg:SvgCachedImage.Transformations>
+                            </ffimageloadingsvg:SvgCachedImage>
+                            <Switch x:Name="driveSwitch" BackgroundColor="#2698fb" IsToggled="true" Toggled="WalkSwitch_Toggled"/>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout> 
+    </ScrollView>
+</ContentPage>

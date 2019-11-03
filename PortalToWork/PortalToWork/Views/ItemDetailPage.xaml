@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             mc:Ignorable="d"
+             x:Class="PortalToWork.Views.ItemDetailPage"
+             Title="{Binding Title}">
+    <ScrollView>
+        <StackLayout Padding="20">
+            <ActivityIndicator
+                           IsVisible="{Binding IsDataBusy}"
+                           IsRunning="{Binding IsDataBusy}"
+                           Color="#2698fb" />
+            <StackLayout HeightRequest="40">
+                <RelativeLayout HorizontalOptions="FillAndExpand">
+                    <StackLayout>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                        </StackLayout.GestureRecognizers>
+                        <ffimageloadingsvg:SvgCachedImage WidthRequest="35" HeightRequest="35"   Source="backArrow.svg">
+                            <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                            </ffimageloadingsvg:SvgCachedImage.Transformations>
+                        </ffimageloadingsvg:SvgCachedImage>
+                    </StackLayout>
+                    <Label RelativeLayout.XConstraint= "{ConstraintExpression Type=RelativeToParent,  Property=Width, Factor=0.30}" Text="JOB DETAILS" FontSize="Large" TextColor="#2698fb" />
+                </RelativeLayout>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <StackLayout>
+                    <Label d:Text="Patient Transporter" TextColor="#2698fb" Text="{Binding Job.JobTitle}" FontSize="Large" />
+                    <Label d:Text="Mercy Health" Text="{Binding Job.EmployerName}" TextColor="#2698fb" FontSize="Small"/>
+                </StackLayout>
+                <StackLayout x:Name="Favorite">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Fav_Tapped" />
+                    </StackLayout.GestureRecognizers>
+                    <ffimageloadingsvg:SvgCachedImage WidthRequest="35" HeightRequest="35" HorizontalOptions="EndAndExpand" Source="star.svg">
+                        <ffimageloadingsvg:SvgCachedImage.Transformations>
+                            <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                        </ffimageloadingsvg:SvgCachedImage.Transformations>
+                    </ffimageloadingsvg:SvgCachedImage>
+                </StackLayout>
+            </StackLayout>
+            <Label Margin="20" d:Text="Qualified candidates may be considered for any
+open position within Patient Transportation. The
+Patient Transporter will transport patient to and from
+the Radiology department as assigned. Keep the
+patient's wheelchairs and carts clean and neat." Text="{Binding Job.Description}" FontSize="Medium" TextColor="#2698fb" />
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Salary" TextColor="#2698fb"/>
+                <Label d:Text="$10/hr" Text="{Binding Job.PayRate}" HorizontalOptions="EndAndExpand" TextColor="#2698fb" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Job Type" TextColor="#2698fb"/>
+                <Label d:Text="Full Time" Text="{Binding Job.JobType}" HorizontalOptions="EndAndExpand" TextColor="#2698fb" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Job Requirements" TextColor="#2698fb"/>
+                <Label d:Text="High School or Equiv" Text="{Binding Job.RequiredEducation}" HorizontalOptions="EndAndExpand" TextColor="#2698fb" />
+            </StackLayout>
+            <Button Clicked="Button_Clicked" BackgroundColor="White" BorderColor="#2698fb" BorderWidth="2" TextColor="#2698fb" CornerRadius="20" WidthRequest="200" HorizontalOptions="Center" Text="Apply/More Info" />
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PortalToWork.Views.FavoritesPage"
+             xmlns:vm="clr-namespace:PortalToWork.ViewModels"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <StackLayout x:Name="JobFavorites" Margin="10">
+            <ActivityIndicator
+                           IsVisible="{Binding IsDataBusy}"
+                           IsRunning="{Binding IsDataBusy}"
+                           Color="#2698fb" />
+            <Label HorizontalOptions="CenterAndExpand" Text="Favorites" FontSize="Large" TextColor="#2698fb" />
+            <ListView x:Name="JobsListView"
+                ItemsSource="{Binding Jobs}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                RefreshCommand="{Binding LoadJobsCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnJobSelected">
+                <d:ListView.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Patient Transporter</x:String>
+                        <x:String>Delivery Driver/Warehouse</x:String>
+                        <x:String>Answering Service</x:String>
+                        <x:String>Arborist</x:String>
+                        <x:String>Vacuum Truck Service</x:String>
+                    </x:Array>
+                </d:ListView.ItemsSource>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Margin="0,10" Padding="10" BackgroundColor="#f1f9ff">
+                                <StackLayout WidthRequest="50" HeightRequest="50">
+                                    <RelativeLayout>
+                                        <ffimageloadingsvg:SvgCachedImage WidthRequest="35" HeightRequest="35" Source="star.svg">
+                                            <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                                <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                            </ffimageloadingsvg:SvgCachedImage.Transformations>
+                                        </ffimageloadingsvg:SvgCachedImage>
+                                        <Label TextColor="White" d:Text="1" Margin="13,8,0,0" Text="{Binding Index}" />
+                                    </RelativeLayout>
+                                </StackLayout>
+                                <StackLayout>
+                                    <Label Text="{Binding JobTitle}" TextColor="#2698fb"
+                                d:Text="{Binding .}"
+                                LineBreakMode="NoWrap"
+                                FontSize="Micro"
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                 />
+                                    <Label Text="{Binding EmployerName}" TextColor="#2698fb"
+                                d:Text="Item description"
+                                LineBreakMode="NoWrap"
+                                FontSize="Micro"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                 />
+                                    <Label Text="Travel Time (min)" TextColor="#2698fb"
+                                d:Text="Item description"
+                                LineBreakMode="NoWrap"
+                                FontSize="Micro"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                 />
+                                </StackLayout>
+                                <StackLayout HorizontalOptions="EndAndExpand" IsVisible="{Binding WalkSwitchOn}">
+                                    <ffimageloadingsvg:SvgCachedImage WidthRequest="25" HeightRequest="25" Source="walk.svg">
+                                        <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                            <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                        </ffimageloadingsvg:SvgCachedImage.Transformations>
+                                    </ffimageloadingsvg:SvgCachedImage>
+                                    <Label d:Text="25 min" FontSize="Small" Text="{Binding WalkTime}" TextColor="#2698fb" />
+                                </StackLayout>
+                                <StackLayout HorizontalOptions="EndAndExpand" IsVisible="{Binding BikeSwitchOn}">
+                                    <ffimageloadingsvg:SvgCachedImage WidthRequest="25" HeightRequest="25" Source="bike.svg">
+                                        <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                            <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                        </ffimageloadingsvg:SvgCachedImage.Transformations>
+                                    </ffimageloadingsvg:SvgCachedImage>
+                                    <Label d:Text="20 min" FontSize="Small" Text="{Binding BikeTime}" TextColor="#2698fb" />
+                                </StackLayout>
+                                <StackLayout HorizontalOptions="EndAndExpand" IsVisible="{Binding DriveSwitchOn}">
+                                    <ffimageloadingsvg:SvgCachedImage WidthRequest="25" HeightRequest="25" Source="car.svg">
+                                        <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                            <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                        </ffimageloadingsvg:SvgCachedImage.Transformations>
+                                    </ffimageloadingsvg:SvgCachedImage>
+                                    <Label d:Text="20 min" FontSize="Small" Text="{Binding DriveTime}" TextColor="#2698fb" />
+                                </StackLayout>
+                                <StackLayout HorizontalOptions="EndAndExpand" IsVisible="{Binding BusSwitchOn}">
+                                    <ffimageloadingsvg:SvgCachedImage WidthRequest="25" HeightRequest="25" Source="bus.svg">
+                                        <ffimageloadingsvg:SvgCachedImage.Transformations>
+                                            <fftransformations:TintTransformation HexColor="#2698fb" EnableSolidColor="true"/>
+                                        </ffimageloadingsvg:SvgCachedImage.Transformations>
+                                    </ffimageloadingsvg:SvgCachedImage>
+                                    <Label d:Text="25 min" FontSize="Small" Text="{Binding BusTime}" TextColor="#2698fb" />
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
